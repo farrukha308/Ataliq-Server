@@ -6,7 +6,7 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "dev": "node dist/server.js",
+    "dev": "npx tsc && node dist/server.js",
     "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
