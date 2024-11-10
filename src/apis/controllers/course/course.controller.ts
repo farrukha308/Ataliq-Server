@@ -313,14 +313,14 @@ export const getCourseDetailsByGrade = async (req: Request, res: Response) => {
             const subjects = await subjectMongoObj.find({ _id: { $in: course.subjectIds } });
 
             result.push({
-                course: {
-                    _id: course._id,
-                    name: course.name,
-                    grade: course.grade,
-                    createdAt: course.createdAt,
-                    subjectIds: course.subjectIds,
-                    isArchive: course.isArchive
-                },
+                // course: {
+                //     _id: course._id,
+                //     name: course.name,
+                //     grade: course.grade,
+                //     createdAt: course.createdAt,
+                //     subjectIds: course.subjectIds,
+                //     isArchive: course.isArchive
+                // },
                 subjects
             });
         }
