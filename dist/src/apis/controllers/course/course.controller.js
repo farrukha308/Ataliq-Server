@@ -298,7 +298,7 @@ const getCourseDetailsByGrade = (req, res) => __awaiter(void 0, void 0, void 0, 
             //     subjectIds: course.subjectIds,
             //     isArchive: course.isArchive
             // },
-            subjects
+            ...subjects
             //}
             );
         }

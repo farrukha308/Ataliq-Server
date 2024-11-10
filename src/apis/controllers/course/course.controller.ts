@@ -322,7 +322,7 @@ export const getCourseDetailsByGrade = async (req: Request, res: Response) => {
                 //     subjectIds: course.subjectIds,
                 //     isArchive: course.isArchive
                 // },
-                subjects
+                ...subjects
             //}
         );
         }
