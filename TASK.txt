@@ -1,0 +1,19 @@
+Ataliq Task:
+
+- models  -------- done
+- set up class in cache load and add some dump class. -------- done
+- set up subjects in cache load and add some dump subjects. -------- done
+
+- CRUD for course. -------- done
+- add validators of course  ------------- done
+- test course api ----------- done
+
+- CRUD for subject ----------- done
+- add validators of subject ------------ done
+- test subject api  ----------- done
+
+- CRUD for lacture --------- done
+- add validators of lacture ----------- done
+- test lacture api  ---------- done
+
+- Get course, Subject and lectures by using single API
