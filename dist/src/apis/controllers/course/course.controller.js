@@ -288,17 +288,19 @@ const getCourseDetailsByGrade = (req, res) => __awaiter(void 0, void 0, void 0, 
         for (const course of courses) {
             // Fetch subjects by `subjectIds` for each course
             const subjects = yield subjectMongoObj.find({ _id: { $in: course.subjectIds } });
-            result.push({
-                // course: {
-                //     _id: course._id,
-                //     name: course.name,
-                //     grade: course.grade,
-                //     createdAt: course.createdAt,
-                //     subjectIds: course.subjectIds,
-                //     isArchive: course.isArchive
-                // },
-                subjects
-            });
+            result.push(
+            //{
+            // course: {
+            //     _id: course._id,
+            //     name: course.name,
+            //     grade: course.grade,
+            //     createdAt: course.createdAt,
+            //     subjectIds: course.subjectIds,
+            //     isArchive: course.isArchive
+            // },
+            subjects
+            //}
+            );
         }
         (0, logger_1.auditLog)(`Courses and Subjects Retrieved for Grade ${grade}`);
         return {

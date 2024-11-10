@@ -312,7 +312,8 @@ export const getCourseDetailsByGrade = async (req: Request, res: Response) => {
             // Fetch subjects by `subjectIds` for each course
             const subjects = await subjectMongoObj.find({ _id: { $in: course.subjectIds } });
 
-            result.push({
+            result.push(
+                //{
                 // course: {
                 //     _id: course._id,
                 //     name: course.name,
@@ -322,7 +323,8 @@ export const getCourseDetailsByGrade = async (req: Request, res: Response) => {
                 //     isArchive: course.isArchive
                 // },
                 subjects
-            });
+            //}
+        );
         }
 
 
