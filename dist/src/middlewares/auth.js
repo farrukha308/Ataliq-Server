@@ -26,6 +26,8 @@ const validateToken = function (req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             (0, logger_1.auditLog)(`Run validateToken middleware Function.`);
+            (0, logger_1.auditLog)(`req.body =>  ${req.body}`);
+            (0, logger_1.auditLog)(`req.headers => ${req.headers}`);
             let nonAccessTokenRoutes = (0, helper_1.getObject)(yield (0, cache_1.getCache)(constant_1.default.SCHEMA.APP_CONFIG), "NAME", constant_1.default.NO_ACCESS_TOKEN_ROUTES);
             (0, logger_1.auditLog)(`Fetched Non-Access Token Routes: ${JSON.stringify(nonAccessTokenRoutes)}`);
             if ((0, helper_1.getRouteName)(req.originalUrl) === "runScript" ||
@@ -38,7 +40,7 @@ const validateToken = function (req, res, next) {
                 const token = req.body.token || req.query.token || req.headers["x-access-token"];
                 if (!token) {
                     (0, logger_1.auditLog)(`No token provided in request headers or body.`);
-                    res.status(401).send("Unauthorized access");
+                    res.status(401).json({ message: "Unauthorized access" });
                 }
                 else {
                     (0, logger_1.auditLog)(`Token found in request: ${token}`);
@@ -67,7 +69,7 @@ const validateToken = function (req, res, next) {
         }
         catch (error) {
             (0, logger_1.auditLog)(`Error in validateToken middleware: ${error.message}`);
-            res.status(401).send("Error: Unauthorized access");
+            res.status(401).json({ message: "Error: Unauthorized access" });
         }
     });
 };
