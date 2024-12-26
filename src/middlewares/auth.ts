@@ -21,6 +21,8 @@ const validateToken = async function (
 ) {
   try {
     auditLog(`Run validateToken middleware Function.`);
+    auditLog(`req.body =>  ${req.body}`);
+    auditLog(`req.headers => ${req.headers}`);
 
     let nonAccessTokenRoutes: any = getObject(
       await getCache(CONSTANT.SCHEMA.APP_CONFIG),
@@ -40,13 +42,13 @@ const validateToken = async function (
       const token = req.body.token || req.query.token || req.headers["x-access-token"];
       if (!token) {
         auditLog(`No token provided in request headers or body.`);
-        return res.status(401).send("Unauthorized access");
+        res.status(401).json({ message: "Unauthorized access"});
       } else {
         auditLog(`Token found in request: ${token}`);
         const decodedResp = await verifyToken(token, process.env.SESSION_SECRET);
 
         if (decodedResp?.status === CONSTANT.RESPONSE_STATUS.SESSION_EXPIRE)
-          return res.status(401).json(decodedResp);
+          res.status(401).json(decodedResp);
 
         auditLog(`Token decoded in request: ${JSON.stringify(decodedResp)}`);
 
@@ -55,13 +57,13 @@ const validateToken = async function (
 
         if (!session) {
           auditLog(`Session not found for token: ${token}`);
-          return res.status(401).json({ message: 'Session not found or expired' });
+          res.status(401).json({ message: 'Session not found or expired' });
         }
 
         // Check if session is expired
         if (session.expiresAt < new Date()) {
           auditLog(`Session expired for token: ${token}`);
-          return res.status(401).json({ message: 'Session expired' });
+          res.status(401).json({ message: 'Session expired' });
         }
 
         auditLog(`Session validated successfully for user: ${decodedResp.decoded.userId}`);
@@ -74,7 +76,7 @@ const validateToken = async function (
     }
   } catch (error: any) {
     auditLog(`Error in validateToken middleware: ${error.message}`);
-    return res.status(401).send("Error: Unauthorized access");
+    res.status(401).json({ message: "Error: Unauthorized access"});
   }
 };
 
