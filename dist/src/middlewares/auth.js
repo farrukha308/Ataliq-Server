@@ -38,24 +38,24 @@ const validateToken = function (req, res, next) {
                 const token = req.body.token || req.query.token || req.headers["x-access-token"];
                 if (!token) {
                     (0, logger_1.auditLog)(`No token provided in request headers or body.`);
-                    return res.status(401).send("Unauthorized access");
+                    res.status(401).send("Unauthorized access");
                 }
                 else {
                     (0, logger_1.auditLog)(`Token found in request: ${token}`);
                     const decodedResp = yield verifyToken(token, process.env.SESSION_SECRET);
                     if ((decodedResp === null || decodedResp === void 0 ? void 0 : decodedResp.status) === constant_1.default.RESPONSE_STATUS.SESSION_EXPIRE)
-                        return res.status(401).json(decodedResp);
+                        res.status(401).json(decodedResp);
                     (0, logger_1.auditLog)(`Token decoded in request: ${JSON.stringify(decodedResp)}`);
                     const sessionMongoObj = new mongodb_1.default(models_1.default.USER_SESSION);
                     const session = yield sessionMongoObj.findOne({ userId: decodedResp.decoded.userId, token });
                     if (!session) {
                         (0, logger_1.auditLog)(`Session not found for token: ${token}`);
-                        return res.status(401).json({ message: 'Session not found or expired' });
+                        res.status(401).json({ message: 'Session not found or expired' });
                     }
                     // Check if session is expired
                     if (session.expiresAt < new Date()) {
                         (0, logger_1.auditLog)(`Session expired for token: ${token}`);
-                        return res.status(401).json({ message: 'Session expired' });
+                        res.status(401).json({ message: 'Session expired' });
                     }
                     (0, logger_1.auditLog)(`Session validated successfully for user: ${decodedResp.decoded.userId}`);
                     let newToken = yield handleUserSession(req, res, session);
@@ -67,7 +67,7 @@ const validateToken = function (req, res, next) {
         }
         catch (error) {
             (0, logger_1.auditLog)(`Error in validateToken middleware: ${error.message}`);
-            return res.status(401).send("Error: Unauthorized access");
+            res.status(401).send("Error: Unauthorized access");
         }
     });
 };
