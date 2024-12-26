@@ -21,8 +21,7 @@ const validateToken = async function (
 ) {
   try {
     auditLog(`Run validateToken middleware Function.`);
-    auditLog(`req.body =>  ${req.body}`);
-    auditLog(`req.headers => ${req.headers}`);
+    auditLog(`req.body =>  ${JSON.stringify(req.headers)}`);
 
     let nonAccessTokenRoutes: any = getObject(
       await getCache(CONSTANT.SCHEMA.APP_CONFIG),
