@@ -84,7 +84,7 @@ courseRoutes.post(
     }
 );
 
-courseRoutes.get(
+courseRoutes.post(
     "/getCourseDetailsByGrade",
     async (req: Request, res: Response, next: NextFunction) => {
         const response = await getCourseDetailsByGrade(req, res);

@@ -136,7 +136,7 @@ const signinEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         //! Create session and return user permissions in response
         let session = yield (0, auth_1.createSession)(user._id, userPermissions);
         (0, logger_1.auditLog)(`Session Created for User ID: ${user._id} | Session Token: ${session.token}`);
-        return Object.assign(Object.assign({}, session), { userPermissions });
+        return Object.assign(Object.assign({}, session), { userPermissions, grade: isUserExist[0].class });
     }
 });
 exports.signinEmail = signinEmail;

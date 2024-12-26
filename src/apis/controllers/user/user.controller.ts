@@ -128,7 +128,8 @@ const signinEmail = async (req: Request, res: Response) => {
 
     return {
       ...session,
-      userPermissions
+      userPermissions,
+      grade: isUserExist[0].class
     };
   }
 };

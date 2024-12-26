@@ -56,7 +56,7 @@ courseRoutes.post("/removeSubjectFromCourse", (req, res, next) => __awaiter(void
     let response = yield (0, course_controller_1.removeSubjectFromCourse)(req, res);
     next(response);
 }));
-courseRoutes.get("/getCourseDetailsByGrade", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+courseRoutes.post("/getCourseDetailsByGrade", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield (0, course_controller_1.getCourseDetailsByGrade)(req, res);
     next(response);
 }));
