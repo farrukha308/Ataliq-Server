@@ -706,6 +706,58 @@ const validateQuestionRetriveEmail = async (req: Request, res: Response) => {
   }
 }
 
+const updateUserDetails = async (req: Request, res: Response) => {
+  try {
+    const { userId, firstName, lastName, mobilePhone, dateOfBirth, board, city, class: userClass } = req.body;
+
+    if (!userId) {
+      return {
+        status: CONSTANT.RESPONSE_STATUS.FAIL,
+        message: "User ID is required.",
+      };
+    }
+
+    const userMongoObj = new MongooseWrapper<any>(MODELS.USER);
+
+    // Check if user exists
+    const existingUser = await userMongoObj.findById(userId);
+    if (!existingUser) {
+      auditLog(`Update User Failed: User not found with ID: ${userId}`);
+      return {
+        status: CONSTANT.RESPONSE_STATUS.FAIL,
+        message: "User not found.",
+      };
+    }
+
+    // Update user details
+    const updatedUser = await userMongoObj.updateById(userId, {
+      ...(firstName && { firstName }),
+      ...(lastName && { lastName }),
+      ...(mobilePhone && { mobilePhone }),
+      ...(dateOfBirth && { dateOfBirth }),
+      ...(board && { board }),
+      ...(city && { city }),
+      ...(userClass && { class: userClass }),
+      updatedAt: new Date(),
+    });
+
+    auditLog(`User Updated: ID: ${userId}, Data: ${JSON.stringify(updatedUser)}`);
+    return {
+      status: CONSTANT.RESPONSE_STATUS.SUCCESS,
+      message: "User updated successfully.",
+      data: updatedUser,
+    };
+  } catch (error: any) {
+    auditLog(`Error updating user details: ${error}`);
+    return {
+      status: CONSTANT.RESPONSE_STATUS.FAIL,
+      message: "Error updating user details.",
+      error: error.message,
+    };
+  }
+};
+
+
 export {
   signinEmail,
   signupEmail,
@@ -717,5 +769,6 @@ export {
   unarchiveRequest,
   checkUserAccount,
   validateQuestionAnswer,
-  validateQuestionRetriveEmail
+  validateQuestionRetriveEmail,
+  updateUserDetails
 };

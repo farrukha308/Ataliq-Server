@@ -29,7 +29,7 @@ lectureRoutes.get(
 );
 
 // Get All Lectures
-lectureRoutes.get(
+lectureRoutes.post(
     "/getAllLectures",
     async (req: Request, res: Response, next: NextFunction) => {
         const response = await getAllLectures(req, res);

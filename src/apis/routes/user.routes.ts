@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { checkUserByObject, signinEmail, signupEmail, sendOTPEmail, resetPassword, unarchiveRequest, checkUserAccount, validateQuestionRetriveEmail } from "../controllers/user/user.controller";
+import { checkUserByObject, signinEmail, signupEmail, sendOTPEmail, resetPassword, unarchiveRequest, checkUserAccount, validateQuestionRetriveEmail, updateUserDetails } from "../controllers/user/user.controller";
 import passport from "../controllers/user/googlePassport";
 import session from "express-session";
 import CONSTANT from "../../constant/constant";
@@ -92,6 +92,13 @@ userRoutes.post(
   }
 );
 
+userRoutes.post(
+  "/updateUserDetails",
+  async (req: Request, res: Response, next: NextFunction) => {
+    let response = await updateUserDetails(req, res);
+    next(response);
+  }
+);
 
 if (process.env.GOOGLE_AUTH_ENABLE === 'Y') {
   userRoutes.use(passport.initialize());
