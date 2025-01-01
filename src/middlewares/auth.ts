@@ -61,7 +61,7 @@ const validateToken = async function (
         }
 
         // Check if session is expired
-        if (session.expiresAt < new Date()) {
+        if (session?.expiresAt < new Date()) {
           auditLog(`Session expired for token: ${token}`);
           res.status(401).json({ message: 'Session expired' });
         }
