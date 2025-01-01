@@ -57,14 +57,14 @@ const validateToken = async function (
 
         if (!session) {
           auditLog(`Session not found for token: ${token}`);
-          res.status(401).json({ message: 'Session not found or expired', responseCode: 'SE01'}).send('Session not found or expired');
+          res.status(401).json({ message: 'Session not found or expired', responseCode: 'SE01'}).send();
           next()
         }
 
         // Check if session is expired
         if (session?.expiresAt < new Date()) {
           auditLog(`Session expired for token: ${token}`);
-          res.status(401).json({ message: 'Session expired' , responseCode: 'SE01'}).send('Session not found or expired');;
+          res.status(401).json({ message: 'Session expired' , responseCode: 'SE01'}).send();
           next()
         }
 
