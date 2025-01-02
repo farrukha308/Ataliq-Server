@@ -42,30 +42,30 @@ const validateToken = async function (
       const token = req.body.token || req.query.token || req.headers["x-access-token"];
       if (!token) {
         auditLog(`No token provided in request headers or body.`);
-        res.status(401).json({ message: "Unauthorized access"});
+        res.status(401).json({ message: "Unauthorized access" });
       } else {
         auditLog(`Token found in request: ${token}`);
         const decodedResp = await verifyToken(token, process.env.SESSION_SECRET);
 
-        if (decodedResp?.status === CONSTANT.RESPONSE_STATUS.SESSION_EXPIRE) 
-          res.status(401).json(decodedResp);
+        if (decodedResp?.status === CONSTANT.RESPONSE_STATUS.SESSION_EXPIRE)
+          return res.status(401).json(decodedResp).send();
 
         auditLog(`Token decoded in request: ${JSON.stringify(decodedResp)}`);
 
         const sessionMongoObj = new MongooseWrapper(MODELS.USER_SESSION);
         const session = <IUserSession>await sessionMongoObj.findOne({ userId: decodedResp.decoded.userId, token });
 
+        console.log('session ', session)
+
         if (!session) {
           auditLog(`Session not found for token: ${token}`);
-          res.status(401).json({ message: 'Session not found or expired', responseCode: 'SE01'}).send();
-          next()
+          return res.status(401).json({ message: 'Session not found or expired', responseCode: CONSTANT.RESPONSE_CODE.SESSION_EXPIRE }).send();
         }
 
         // Check if session is expired
         if (session?.expiresAt < new Date()) {
           auditLog(`Session expired for token: ${token}`);
-          res.status(401).json({ message: 'Session expired' , responseCode: 'SE01'}).send();
-          next()
+          return res.status(401).json({ message: 'Session expired', responseCode: CONSTANT.RESPONSE_CODE.SESSION_EXPIRE }).send();
         }
 
         auditLog(`Session validated successfully for user: ${decodedResp.decoded.userId}`);
@@ -78,7 +78,7 @@ const validateToken = async function (
     }
   } catch (error: any) {
     auditLog(`Error in validateToken middleware: ${error.message}`);
-    res.status(401).json({ message: "Error: Unauthorized access"});
+    res.status(401).json({ message: "Error: Unauthorized access" });
   }
 };
 
