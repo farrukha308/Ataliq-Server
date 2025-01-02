@@ -48,7 +48,7 @@ const validateToken = async function (
         const decodedResp = await verifyToken(token, process.env.SESSION_SECRET);
 
         if (decodedResp?.status === CONSTANT.RESPONSE_STATUS.SESSION_EXPIRE) 
-          res.status(401).json(decodedResp);
+          return res.status(401).json(decodedResp).send();
 
         auditLog(`Token decoded in request: ${JSON.stringify(decodedResp)}`);
 
